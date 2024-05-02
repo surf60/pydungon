@@ -68,6 +68,9 @@ def loot_drop(boost_map, player):
             player.agility += 1
 
         print(f"You found a {item_to_drop} and gained +{stat_boost}!")
+
+def death(player):
+    print(f"{player.name} is now Dead")
     
 def fight(player, enemy):
     while player.is_alive() and enemy.is_alive():
@@ -85,25 +88,17 @@ def fight(player, enemy):
     if player.is_alive() and not enemy.is_alive():
         print("Congratulations, you have won the fight!")
         level_up(player)
+    elif not player.is_alive():
+        print(f"{enemy.name} has defeated you!")
+        death(player)
+
+    if player.is_alive() and not enemy.is_alive():
+        print("Congratulations, you have won the fight!")
+        level_up(player)
 
     elif not player.is_alive():
         print(f"{enemy.name} has defeated you!")
-
-    # Ask the player if they want to fight again
-    if player.is_alive():
-        while True:
-            response = input("Do you want to fight again? (yes/no): ")
-            if response.lower() == "yes":
-                # Create a new enemy and start the fight again
-                enemy2 = EnemyCharacter("Goblin", 1, 5, 5, 3, 2)
-                print(enemy2)
-                fight(player, enemy2)
-                break
-            elif response.lower() == "no":
-                print("Thanks for playing!")
-                break
-            else:
-                print("Invalid input. Please enter 'yes' or 'no'.")
+        death(player)
 
 
 player1 = PlayerCharacter("John",1,15,3,1,1)
@@ -112,4 +107,4 @@ enemy1 = EnemyCharacter("Goblin", 1, 10, 5, 3, 2)
 level_up(player1)
 items = {"Health Potion": "health", "Strength Tonic": "strength", "Agility Elixir": "agility"}
 loot_drop(items, player1)
-#fight(player1,enemy1)
+fight(player1,enemy1)
