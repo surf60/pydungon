@@ -48,6 +48,27 @@ class EnemyCharacter:
     def __str__(self): 
         return f"Name: {self.name}, Level: {self.level}, Health: {self.health}, Strength: {self.strength}, Agility: {self.agility}, Intelligence: {self.intelligence}"
     
+def level_up(player):
+    player.level += 1
+    player.health += 5
+    player.strength += 1
+    player.agility += 1
+    print(f"{player.name} has leveled up to level {player.level}!")
+
+def loot_drop(boost_map, player):
+    item_to_drop = random.choice(list(boost_map.keys()))
+    stat_boost = boost_map.get(item_to_drop, "None")
+
+    if stat_boost:
+        if stat_boost == "health":
+            player.health += 10
+        elif stat_boost == "strength":
+            player.strength += 1
+        elif stat_boost == "agility":
+            player.agility += 1
+
+        print(f"You found a {item_to_drop} and gained +{stat_boost}!")
+    
 def fight(player, enemy):
     while player.is_alive() and enemy.is_alive():
         player_attacks = random.randint(player.strength - 3, player.strength)
@@ -63,14 +84,8 @@ def fight(player, enemy):
 
     if player.is_alive() and not enemy.is_alive():
         print("Congratulations, you have won the fight!")
+        level_up(player)
 
-        # Level up the player
-        player.level += 1
-        player.health += 1
-        player.strength += 1
-        player.agility += 1
-
-        print(f"{player.name} has leveled up to level {player.level}!")
     elif not player.is_alive():
         print(f"{enemy.name} has defeated you!")
 
@@ -94,4 +109,7 @@ def fight(player, enemy):
 player1 = PlayerCharacter("John",1,15,3,1,1)
 enemy1 = EnemyCharacter("Goblin", 1, 10, 5, 3, 2)
 
-fight(player1,enemy1)
+level_up(player1)
+items = {"Health Potion": "health", "Strength Tonic": "strength", "Agility Elixir": "agility"}
+loot_drop(items, player1)
+#fight(player1,enemy1)
