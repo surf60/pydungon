@@ -61,12 +61,37 @@ def fight(player, enemy):
         print(f"{enemy.name} attacks {player.name} for {enemy_attacks} damage!")
         player.take_damage(enemy_attacks)
 
-    if player.is_alive():
-        print(f"{player.name} has defeated {enemy.name}!")
-    else:
-        print(f"{enemy.name} has defeated {player.name}!")
+    if player.is_alive() and not enemy.is_alive():
+        print("Congratulations, you have won the fight!")
 
-player1 = PlayerCharacter("John",1,10,3,1,1)
+        # Level up the player
+        player.level += 1
+        player.health += 1
+        player.strength += 1
+        player.agility += 1
+
+        print(f"{player.name} has leveled up to level {player.level}!")
+    elif not player.is_alive():
+        print(f"{enemy.name} has defeated you!")
+
+    # Ask the player if they want to fight again
+    if player.is_alive():
+        while True:
+            response = input("Do you want to fight again? (yes/no): ")
+            if response.lower() == "yes":
+                # Create a new enemy and start the fight again
+                enemy2 = EnemyCharacter("Goblin", 1, 5, 5, 3, 2)
+                print(enemy2)
+                fight(player, enemy2)
+                break
+            elif response.lower() == "no":
+                print("Thanks for playing!")
+                break
+            else:
+                print("Invalid input. Please enter 'yes' or 'no'.")
+
+
+player1 = PlayerCharacter("John",1,15,3,1,1)
 enemy1 = EnemyCharacter("Goblin", 1, 10, 5, 3, 2)
 
 fight(player1,enemy1)
