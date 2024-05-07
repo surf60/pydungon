@@ -50,9 +50,9 @@ class EnemyCharacter:
     
 def level_up(player):
     player.level += 1
-    player.health += 5
-    player.strength += 1
-    player.agility += 1
+    player.health += random.randint(3,7)
+    player.strength += random.randint(1,3)
+    player.agility += random.randint(1,3)
     print(f"{player.name} has leveled up to level {player.level}!")
 
 def loot_drop(boost_map, player):
@@ -100,11 +100,28 @@ def fight(player, enemy):
         print(f"{enemy.name} has defeated you!")
         death(player)
 
+def create_enemy(player_level):
+    base_health = 10
+    health_diff = random.randint(-2, 3)
+    enemy_health = base_health + (player_level - 1) + health_diff
+
+    base_strength = 5
+    strength_diff = random.randint(-1, 2)
+    enemy_strength = base_strength + (player_level - 1) + strength_diff
+
+    return EnemyCharacter(f"Level {player_level} Enemy", player_level, enemy_health, enemy_strength, 3, 2)
 
 player1 = PlayerCharacter("John",1,15,3,1,1)
-enemy1 = EnemyCharacter("Goblin", 1, 10, 5, 3, 2)
+#enemy1 = EnemyCharacter("Goblin", 1, 10, 5, 3, 2)
+enemy1 = create_enemy(player1.level)
 
 level_up(player1)
 items = {"Health Potion": "health", "Strength Tonic": "strength", "Agility Elixir": "agility"}
 loot_drop(items, player1)
 fight(player1,enemy1)
+while player1.is_alive():  # While the player is alive
+    enemy1 = create_enemy(player1.level)  # Create an enemy of the same level as the player
+    print(enemy1)
+    fight(player1, enemy1)  # Fight the enemy
+    print(player1)
+    input('Continue: ')  # Wait for user to continue
